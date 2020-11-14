@@ -1,21 +1,33 @@
-import React from 'react';
-import BoardContainer from '../components/BoardContainer';
-import Auth from '../components/Auth';
+import React, { Component } from 'react';
+import getBoards from '../helpers/data/boardData';
+import BoardsCard from '../components/Cards/BoardsCard';
 
-export default function Boards(props) {
-  const loadComponent = () => {
-    let component = '';
-    if (props.authed) {
-      component = <BoardContainer />;
-    } else {
-      component = <Auth />;
-    }
-    return component;
+export default class Boards extends Component {
+  state = {
+    boards: [],
   };
-  return (
-    <div>
-      <h1>BOARDS</h1>
-      {loadComponent()}
-    </div>
-  );
+
+  componentDidMount() {
+    getBoards.getBoards().then((resp) => {
+      this.setState({
+        boards: resp,
+      });
+    });
+  }
+
+  render() {
+    const { boards } = this.state;
+    const showBoards = () => (
+      boards.map((board) => <BoardsCard key={board.firebaseKey} board={board} />)
+    );
+
+    return (
+      <>
+        <h1>All the boards</h1>
+        <div className='d-flex flex-wrap container'>
+          {showBoards()}
+        </div>
+      </>
+    );
+  }
 }
