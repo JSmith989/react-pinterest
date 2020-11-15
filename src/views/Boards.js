@@ -1,32 +1,49 @@
-import React, { Component } from 'react';
-import getBoards from '../helpers/data/boardData';
+import React from 'react';
+import { getAllUserBoards } from '../helpers/data/boardData';
 import BoardsCard from '../components/Cards/BoardsCard';
+import Loader from '../components/Loader';
+import getUid from '../helpers/data/authData';
 
-export default class Boards extends Component {
+export default class Boards extends React.Component {
   state = {
     boards: [],
-  };
+    loading: true,
+  }
 
   componentDidMount() {
-    getBoards.getBoards().then((resp) => {
+    const currentUserId = getUid();
+    getAllUserBoards(currentUserId).then((response) => {
       this.setState({
-        boards: resp,
-      });
+        boards: response,
+      }, this.setLoading);
     });
   }
 
+  setLoading = () => {
+    this.timer = setInterval(() => {
+      this.setState({ loading: false });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   render() {
-    const { boards } = this.state;
+    const { boards, loading } = this.state;
     const showBoards = () => (
       boards.map((board) => <BoardsCard key={board.firebaseKey} board={board} />)
     );
-
     return (
       <>
-        <h1>All the boards</h1>
-        <div className='d-flex flex-wrap container'>
-          {showBoards()}
-        </div>
+        { loading ? (
+          <Loader />
+        ) : (
+          <>
+          <h2>Here are all of your boards</h2>
+          <div className='d-flex flex-wrap container'>{showBoards()}</div>
+          </>
+        )}
       </>
     );
   }

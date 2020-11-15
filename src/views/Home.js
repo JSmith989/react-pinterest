@@ -1,20 +1,23 @@
 import React from 'react';
-import BoardContainer from '../components/BoardContainer';
 import Auth from '../components/Auth';
+import Loader from '../components/Loader';
 
-export default function Home(props) {
+export default function Home({ user }) {
   const loadComponent = () => {
     let component = '';
-    if (props.authed) {
-      component = <BoardContainer />;
+    if (user === null) {
+      component = <Loader />;
+    } else if (user) {
+      component = 'Load all non-private pins here';
     } else {
       component = <Auth />;
     }
     return component;
   };
+
   return (
     <div>
-      <h1>HOME PAGE</h1>
+      <h1>Welcome to React-Pinterest</h1>
       {loadComponent()}
     </div>
   );

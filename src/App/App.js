@@ -1,27 +1,27 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Routes from '../helpers/Routes';
 import fbConnection from '../helpers/data/connection';
-import './App.scss';
 import MyNavbar from '../components/MyNavbar';
-import { patchFBBoardkeys, patchFBPinkeys } from '../helpers/data/patchFBkeys';
+import Routes from '../helpers/Routes';
 
-patchFBBoardkeys();
-patchFBPinkeys();
+// import { patchFBBoardkeys, patchFBPinkeys } from '../helpers/data/patchFBkeys';
+
+// patchFBBoardkeys();
+// patchFBPinkeys();
 fbConnection();
 
 class App extends React.Component {
   state = {
-    authed: false,
+    user: null,
   };
 
   componentDidMount() {
     this.removeListener = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ authed: true });
+        this.setState({ user });
       } else {
-        this.setState({ authed: false });
+        this.setState({ user: false });
       }
     });
   }
@@ -31,13 +31,12 @@ class App extends React.Component {
   }
 
   render() {
-    const { authed } = this.state;
-
+    const { user } = this.state;
     return (
       <div className='App'>
         <Router>
-        <MyNavbar authed={authed} />
-        <Routes authed={authed} />
+          <MyNavbar user={user}/>
+          <Routes user={user} />
         </Router>
       </div>
     );
