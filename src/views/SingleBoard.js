@@ -2,6 +2,7 @@ import React from 'react';
 import { getBoardPins, getPin } from '../helpers/data/pinData';
 import { getSingleBoard } from '../helpers/data/boardData';
 import PinsCard from '../components/Cards/PinsCard';
+import BoardForm from '../components/Forms/BoardForm';
 
 export default class SingleBoard extends React.Component {
   state = {
@@ -12,11 +13,7 @@ export default class SingleBoard extends React.Component {
   componentDidMount() {
     // 0. Make a call to the API that gets the board info
     const boardId = this.props.match.params.id;
-    getSingleBoard(boardId).then((response) => {
-      this.setState({
-        board: response,
-      });
-    });
+    this.getBoardInfo(boardId);
 
     // 1. Make a call to the API that returns the pins associated with this board and set to state.
     this.getPins(boardId)
@@ -24,6 +21,14 @@ export default class SingleBoard extends React.Component {
       .then((resp) => (
         this.setState({ pins: resp })
       ));
+  }
+
+  getBoardInfo = (boardId) => {
+    getSingleBoard(boardId).then((response) => {
+      this.setState({
+        board: response,
+      });
+    });
   }
 
   getPins = (boardId) => (
@@ -51,6 +56,7 @@ export default class SingleBoard extends React.Component {
     return (
       <div>
         <h1>{board.name}</h1>
+        { Object.keys(board).length && <BoardForm board={board} onUpdate={this.getBoardInfo} />}
         <div className='d-flex flex-wrap container'>
           {renderPins()}
         </div>
