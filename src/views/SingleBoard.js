@@ -3,6 +3,7 @@ import { getBoardPins, getPin } from '../helpers/data/pinData';
 import { getSingleBoard } from '../helpers/data/boardData';
 import PinsCard from '../components/Cards/PinsCard';
 import BoardForm from '../components/Forms/BoardForm';
+import AppModal from '../components/AppModal';
 
 export default class SingleBoard extends React.Component {
   state = {
@@ -17,7 +18,7 @@ export default class SingleBoard extends React.Component {
 
     // 1. Make a call to the API that returns the pins associated with this board and set to state.
     this.getPins(boardId)
-      // because we did a promise.all, the response will not resolve until all the promises are completed
+    // because we did a promise.all, the response will not resolve until all the promises are completed
       .then((resp) => (
         this.setState({ pins: resp })
       ));
@@ -56,7 +57,9 @@ export default class SingleBoard extends React.Component {
     return (
       <div>
         <h1>{board.name}</h1>
+        <AppModal title={'Update Board'} buttonLabel={'Update Board'}>
         { Object.keys(board).length && <BoardForm board={board} onUpdate={this.getBoardInfo} />}
+        </AppModal>
         <div className='d-flex flex-wrap container'>
           {renderPins()}
         </div>
