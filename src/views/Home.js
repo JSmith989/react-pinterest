@@ -1,6 +1,7 @@
 import React from 'react';
 import Auth from '../components/Auth';
 import Loader from '../components/Loader';
+import HomePage from '../components/HomePage';
 
 export default function Home({ user }) {
   const loadComponent = () => {
@@ -8,7 +9,7 @@ export default function Home({ user }) {
     if (user === null) {
       component = <Loader />;
     } else if (user) {
-      component = 'Load all non-private pins here';
+      component = <HomePage />;
     } else {
       component = <Auth />;
     }
