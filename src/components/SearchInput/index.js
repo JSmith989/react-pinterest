@@ -7,7 +7,7 @@ class SearchInput extends Component {
     text: '',
   }
 
-  handleSubmit= (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.history.push(`/search/${this.state.text}/${this.state.type}`);
 
