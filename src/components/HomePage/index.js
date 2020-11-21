@@ -16,7 +16,7 @@ export default class HomePage extends Component {
   getPins = () => {
     getAllPins().then((response) => {
       const pins = response;
-      const showPins = Object.values(pins).filter((pin) => pin.private !== false);
+      const showPins = Object.values(pins).filter((pin) => pin.private !== true);
       this.setState({
         pins: showPins,
       }, this.setLoading);

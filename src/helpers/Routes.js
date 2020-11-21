@@ -10,7 +10,7 @@ import SingleBoard from '../views/SingleBoard';
 import NotFound from '../views/NotFound';
 import SearchResults from '../views/SearchResults';
 
-export default function Routes({ user }) {
+export default function Routes({ user, pins, boards }) {
   return (
       <Switch>
         <Route
@@ -41,7 +41,7 @@ export default function Routes({ user }) {
         <Route
           exact
           path='/search/:term/:type'
-          component={(props) => <SearchResults {...props} />}
+          component={(props) => <SearchResults {...props} pins={pins} boards={boards}/>}
         />
         <Route
           exact

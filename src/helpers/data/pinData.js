@@ -14,6 +14,15 @@ const getAllPins = () => new Promise((resolve, reject) => {
   }).catch((error) => reject(error));
 });
 
+const createPin = (data) => axios.post(`${baseUrl}/pins.json`, data).then((response) => {
+  const update = { firebaseKey: response.data.name };
+  axios
+    .patch(`${baseUrl}/pins/${response.data.name}.json`, update)
+    .catch((error) => console.warn(error));
+});
+
+const updatePin = (dataObject) => axios.patch(`${baseUrl}/pins/${dataObject.firebaseKey}.json`, dataObject);
+
 const getAllUserPins = (uid) => new Promise((resolve, reject) => {
   axios.get(`${baseUrl}/pins.json?orderBy="userId"&equalTo="${uid}"`).then((response) => {
     resolve(Object.values(response.data));
@@ -27,5 +36,5 @@ const getPin = (pinId) => new Promise((resolve, reject) => {
 });
 
 export {
-  getBoardPins, getPin, getAllPins, getAllUserPins,
+  getBoardPins, getPin, getAllPins, getAllUserPins, createPin, updatePin,
 };
