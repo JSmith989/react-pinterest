@@ -1,4 +1,5 @@
 import axios from 'axios';
+// import { getBoardPins, deletePin } from './pinData';
 
 const baseUrl = 'https://pinterest-3deb6.firebaseio.com/';
 
@@ -29,6 +30,8 @@ const createBoard = (data) => axios.post(`${baseUrl}/boards.json`, data).then((r
 
 const updateBoard = (dataObject) => axios.patch(`${baseUrl}/boards/${dataObject.firebaseKey}.json`, dataObject);
 
+const deleteBoard = (boardId) => axios.delete(`${baseUrl}/boards/${boardId}.json`);
+
 export {
-  getAllUserBoards, getSingleBoard, createBoard, updateBoard, getAllBoards,
+  getAllUserBoards, getSingleBoard, createBoard, updateBoard, getAllBoards, deleteBoard,
 };

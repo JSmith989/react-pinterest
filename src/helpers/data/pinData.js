@@ -35,6 +35,8 @@ const getPin = (pinId) => new Promise((resolve, reject) => {
   }).catch((error) => reject(error));
 });
 
+const deletePin = (firebaseKey) => axios.delete(`${baseUrl}/pins/${firebaseKey}.json`);
+
 export {
-  getBoardPins, getPin, getAllPins, getAllUserPins, createPin, updatePin,
+  getBoardPins, getPin, getAllPins, getAllUserPins, createPin, updatePin, deletePin,
 };
