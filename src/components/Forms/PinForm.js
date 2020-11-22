@@ -62,6 +62,7 @@ export default class PinForm extends Component {
   }
 
   render() {
+    // console.warn(this.props.pin.firebaseKey);
     return (
         <form onSubmit={this.handleSubmit}>
         <h1>Pins form</h1>
