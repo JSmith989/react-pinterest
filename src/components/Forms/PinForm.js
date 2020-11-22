@@ -11,7 +11,7 @@ export default class PinForm extends Component {
     imageUrl: this.props.pin?.imageUrl || '',
     userId: this.props.pin?.userId || '',
     description: this.props.pin?.description || '',
-    private: this.props.pin?.private || true,
+    private: false,
   };
 
   componentDidMount() {
@@ -50,22 +50,33 @@ export default class PinForm extends Component {
     } else {
       updatePin(this.state)
         .then(() => {
-          this.props.onUpdate(this.state.firebaseKey);
+          this.props.onUpdate(this.props.pin.firebaseKey);
         });
     }
   }
 
+  changeStatus = () => {
+    this.setState({
+      private: !this.state.private,
+    });
+  }
+
   render() {
+    // console.warn(this.props.pin.firebaseKey);
     return (
         <form onSubmit={this.handleSubmit}>
         <h1>Pins form</h1>
+        <div class="form-check form-check-inline">
+          <label class="form-check-label" for="inlineCheckbox1">Make Pin Private</label>
         <input
+          class="form-check-input"
+          id="inlineCheckbox1"
           type='checkbox'
           name='status'
-          value={this.state.private}
-          onChange={this.handleChange}
-          className='form-control form-control-lg m-1'
+          onChange={this.changeStatus}
+          className='form-control form-control-sm m-1'
         />
+        </div>
         <input
           type='text'
           name='name'

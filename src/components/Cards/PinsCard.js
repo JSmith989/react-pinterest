@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import AppModal from '../AppModal';
+import PinForm from '../Forms/PinForm';
 
-export default function PinsCard({ pin }) {
+export default function PinsCard({ pin, updatePin, removePin }) {
   return (
     <div className='card m-2'>
       <img className='card-img-top' src={pin.imageUrl} alt='Card cap' />
@@ -10,9 +11,11 @@ export default function PinsCard({ pin }) {
         <p className='card-text'>
           {pin.description}
         </p>
-        <Link className='btn btn-primary' to={`/pin-edit/${pin.firebaseKey}`}>
-          Edit Pin
-        </Link>
+
+        <button className='btn btn-danger' id={pin.firebaseKey} onClick={(e) => removePin(e)}>Delete</button>
+        <AppModal title={'Edit Pin'} buttonLabel={'Edit Pin'}>
+          <PinForm pin={pin} onUpdate={updatePin}/>
+            </AppModal>
       </div>
     </div>
   );
