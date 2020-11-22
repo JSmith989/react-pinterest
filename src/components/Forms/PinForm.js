@@ -50,7 +50,7 @@ export default class PinForm extends Component {
     } else {
       updatePin(this.state)
         .then(() => {
-          this.props.onUpdate(this.state.firebaseKey);
+          this.props.onUpdate(this.props.pin.firebaseKey);
         });
     }
   }
