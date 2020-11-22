@@ -12,7 +12,7 @@ export default function PinsCard({ pin, updatePin, removePin }) {
           {pin.description}
         </p>
 
-        <button id={pin.firebaseKey} onClick={(e) => removePin(e)}>Delete</button>
+        <button className='btn btn-danger' id={pin.firebaseKey} onClick={(e) => removePin(e)}>Delete</button>
         <AppModal title={'Edit Pin'} buttonLabel={'Edit Pin'}>
           <PinForm pin={pin} onUpdate={updatePin}/>
             </AppModal>
