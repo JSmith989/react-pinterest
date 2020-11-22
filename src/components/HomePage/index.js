@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { getAllPins } from '../../helpers/data/pinData';
 import Loader from '../Loader';
-import PinsCard from '../Cards/PinsCard';
+import HomePins from '../Cards/HomePins';
 
 export default class HomePage extends Component {
   state = {
@@ -36,7 +36,7 @@ export default class HomePage extends Component {
   render() {
     const { pins, loading } = this.state;
     const showPins = () => (
-      pins.map((pin) => <PinsCard key={pin.firebaseKey} pin={pin} />)
+      pins.map((pin) => <HomePins key={pin.firebaseKey} pin={pin} />)
     );
     return (
         <>
