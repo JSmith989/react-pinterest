@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/storage';
-import { createPin, updatePin } from '../../helpers/data/pinData';
+import { createPin, updatePin, joinPinToBoard } from '../../helpers/data/pinData';
 import getUser from '../../helpers/data/authData';
 
 export default class PinForm extends Component {
@@ -46,6 +46,8 @@ export default class PinForm extends Component {
       createPin(this.state)
         .then(() => {
           this.props.onUpdate();
+        }).then(() => {
+          joinPinToBoard({ userId: this.state.userId, pinId: this.state.firebaseKey, boardId: this.props.board.firebaseKey });
         });
     } else {
       updatePin(this.state)
