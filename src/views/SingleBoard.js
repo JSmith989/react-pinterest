@@ -1,9 +1,15 @@
 import React from 'react';
-import { getBoardPins, getPin } from '../helpers/data/pinData';
+import {
+  getBoardPins,
+  getPin,
+  deletePin,
+  deletePinOffBoard,
+} from '../helpers/data/pinData';
 import { getSingleBoard } from '../helpers/data/boardData';
 import PinsCard from '../components/Cards/PinsCard';
 import BoardForm from '../components/Forms/BoardForm';
 import AppModal from '../components/AppModal';
+import PinForm from '../components/Forms/PinForm';
 
 export default class SingleBoard extends React.Component {
   state = {
@@ -45,11 +51,22 @@ export default class SingleBoard extends React.Component {
     })
   )
 
+  removePin = (e) => {
+    deletePin(e.target.id).then(() => {
+      deletePinOffBoard(e.target.id).then(() => {
+        const deleted = this.state.pins.filter((pin) => pin.firebaseKey !== e.target.id);
+        this.setState({
+          pins: deleted,
+        });
+      });
+    });
+  }
+
   render() {
     const { pins, board } = this.state;
     const renderPins = () => (
       pins.map((pin) => (
-         <PinsCard key={pin.firebaseKey} pin={pin} />
+         <PinsCard key={pin.firebaseKey} pin={pin} rempovePin={this.removePin}/>
       ))
     );
 
@@ -59,6 +76,9 @@ export default class SingleBoard extends React.Component {
         <h1>{board.name}</h1>
         <AppModal title={'Update Board'} buttonLabel={'Update Board'}>
         { Object.keys(board).length && <BoardForm board={board} onUpdate={this.getBoardInfo} />}
+        </AppModal>
+        <AppModal title={'Pin a Pin'} buttonLabel={'Pin a Pin'}>
+          <PinForm board={board} onUpdate={this.getBoardInfo}/>
         </AppModal>
         <div className='d-flex flex-wrap container'>
           {renderPins()}

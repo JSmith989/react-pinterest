@@ -44,10 +44,13 @@ export default class PinForm extends Component {
 
     if (this.state.firebaseKey === '') {
       createPin(this.state)
-        .then(() => {
-          this.props.onUpdate();
-        }).then(() => {
-          joinPinToBoard({ userId: this.state.userId, pinId: this.state.firebaseKey, boardId: this.props.board.firebaseKey });
+        .then((response) => {
+          const joinTableObject = {
+            boardId: this.props.board.firebaseKey,
+            pinId: response.data.firebaseKey,
+            userId: this.state.userId,
+          };
+          joinPinToBoard(joinTableObject).then(() => this.props.onUpdate(this.props.board.firebaseKey));
         });
     } else {
       updatePin(this.state)
@@ -64,7 +67,6 @@ export default class PinForm extends Component {
   }
 
   render() {
-    // console.warn(this.props.pin.firebaseKey);
     return (
         <form onSubmit={this.handleSubmit}>
         <h1>Pins form</h1>

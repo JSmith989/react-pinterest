@@ -14,6 +14,7 @@ export default class Pins extends Component {
 
   componentDidMount() {
     this.getPins();
+    this.getBoards();
   }
 
   getPins = () => {
@@ -48,6 +49,7 @@ export default class Pins extends Component {
   }
 
   render() {
+    // console.warn(this.state.boards);
     const { pins, boards } = this.state;
     return (
         <>
