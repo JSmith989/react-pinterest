@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/storage';
 import { createPin, updatePin, createBoardPin } from '../../helpers/data/pinData';
+import { getAllUserBoards } from '../../helpers/data/boardData';
 import getUser from '../../helpers/data/authData';
 import BoardDropdown from '../BoardDropdown';
 
@@ -12,17 +13,24 @@ export default class PinForm extends Component {
     imageUrl: this.props.pin?.imageUrl || '',
     userId: this.props.pin?.userId || '',
     description: this.props.pin?.description || '',
-    boardId: this.props.board?.firebaseKey || '',
+    boardId: this.props.pin?.boardId || '',
     private: false,
-    board: [],
   };
-
-  boardRef = React.createRef();
 
   componentDidMount() {
     const userId = getUser();
     this.setState({
       userId,
+    });
+    this.getBoards();
+  }
+
+  getBoards = () => {
+    const currentUserId = getUser();
+    getAllUserBoards(currentUserId).then((response) => {
+      this.setState({
+        boards: response,
+      });
     });
   }
 
@@ -60,13 +68,13 @@ export default class PinForm extends Component {
       createPin(newPin)
         .then((response) => {
           const joinTableObject = {
-            boardId: this.boardRef.current.value,
+            boardId: this.state.boardId,
             pinId: response.data.firebaseKey,
             userId: this.state.userId,
           };
           createBoardPin(joinTableObject);
         }).then(() => {
-          this.props.onUpdate?.(this.props.boardId);
+          this.props.onUpdate(this.props.boardId);
         });
     } else {
       const pinUpdate = {
@@ -81,12 +89,12 @@ export default class PinForm extends Component {
       updatePin(pinUpdate)
         .then((response) => {
           const updatedTable = {
-            boardId: this.boardRef.current.value,
+            boardId: this.state.boardId,
             pinId: response.data.firebaseKey,
             userId: this.state.userId,
           };
           createBoardPin(updatedTable);
-          this.props.onUpdate?.(this.props.pin.firebaseKey);
+          this.props.onUpdate(this.props.pin.firebaseKey);
         });
     }
   }
@@ -130,7 +138,7 @@ export default class PinForm extends Component {
           className='form-control form-control-lg m-1'
           required
         />
-        <BoardDropdown onChange={this.handleChange} ref={this.boardRef}/>
+        <BoardDropdown onChange={this.handleChange} />
         <input
           type='url'
           name='imageUrl'

@@ -25,7 +25,7 @@ export default function Routes({ user, pins, boards }) {
         <PrivateRoute
           exact
           path='/pins'
-          component={() => <Pins pins={pins} boards={boards}/>}
+          component={() => <Pins />}
           user={user}
         />
         <PrivateRoute
