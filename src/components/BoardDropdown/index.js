@@ -28,8 +28,7 @@ export default class BoardDropdown extends Component {
     return (
         <div class="form-group">
         <select class="form-control"
-        id="boardId"
-        ref={this.props.boardRef}
+        name="boardId"
         onChange={this.props.onChange}>
           <option value=''>Choose Board</option>
           {displayBoards()}
