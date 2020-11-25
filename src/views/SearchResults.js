@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import BoardsCard from '../components/Cards/BoardsCard';
-import { getAllPins } from '../helpers/data/pinData';
-import { getAllBoards } from '../helpers/data/boardData';
 import PinsCard from '../components/Cards/PinsCard';
 
 export default class SearchResults extends Component {
   state = {
-    boards: [],
-    pins: [],
+    boards: this.props.boards,
+    pins: this.props.pins,
     results: [],
     searchTerm: '',
     searchType: '',
@@ -15,28 +13,6 @@ export default class SearchResults extends Component {
 
   componentDidMount() {
     this.performSearch();
-    this.getPins();
-    this.getBoards();
-  }
-
-  getPins = () => {
-    getAllPins().then((response) => {
-      const pins = response;
-      const showPins = Object.values(pins).filter((pin) => pin);
-      this.setState({
-        pins: showPins,
-      });
-    });
-  };
-
-  getBoards = () => {
-    getAllBoards().then((response) => {
-      const boards = response;
-      const showBoards = Object.values(boards).filter((board) => board);
-      this.setState({
-        boards: showBoards,
-      });
-    });
   }
 
   performSearch = () => {

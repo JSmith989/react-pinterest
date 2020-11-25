@@ -60,10 +60,6 @@ export default class Pins extends Component {
     }, 1000);
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
   render() {
     // console.warn(this.state.boards);
     const { pins, boards, loading } = this.state;

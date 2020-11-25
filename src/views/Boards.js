@@ -48,10 +48,6 @@ export default class Boards extends React.Component {
     }, 1000);
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
   render() {
     const { boards, loading } = this.state;
     const showBoards = () => (
