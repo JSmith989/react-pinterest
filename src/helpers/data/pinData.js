@@ -61,6 +61,14 @@ const deletePinOffBoard = (firebaseKey) => {
   });
 };
 
+const deleteJoinTable = (pinId) => new Promise((resolve, reject) => {
+  axios.get(`${baseUrl}/pins-boards.json?orderBy="pinId"&equalTo="${pinId}"`).then((response) => {
+    Object.keys(response.data).forEach((firebaseKey) => {
+      axios.delete(`${baseUrl}/pins-boards/${firebaseKey}.json`);
+    });
+  }).then(resolve).catch((error) => reject(error));
+});
+
 export {
-  getBoardPins, getPin, getAllPins, getAllUserPins, createPin, updatePin, deletePin, createBoardPin, joinPinToBoard, deletePinOffBoard,
+  getBoardPins, getPin, getAllPins, getAllUserPins, createPin, updatePin, deletePin, createBoardPin, joinPinToBoard, deletePinOffBoard, deleteJoinTable,
 };

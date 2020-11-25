@@ -90,7 +90,7 @@ export default class PinForm extends Component {
         .then((response) => {
           const updatedTable = {
             boardId: this.state.boardId,
-            pinId: response.data.firebaseKey,
+            pinId: this.state.firebaseKey,
             userId: this.state.userId,
           };
           createBoardPin(updatedTable);
@@ -109,15 +109,14 @@ export default class PinForm extends Component {
     return (
         <form onSubmit={this.handleSubmit}>
         <h1>Pins form</h1>
-        <div class="form-check form-check-inline">
-          <label class="form-check-label" for="inlineCheckbox1">Make Pin Private</label>
+        <div className="form-check form-check-inline">
+          <label className="form-check-label" htmlFor="inlineCheckbox1">Make Pin Private</label>
         <input
-          class="form-check-input"
           id="inlineCheckbox1"
           type='checkbox'
           name='status'
           onChange={this.changeStatus}
-          className='form-control form-control-sm m-1'
+          className='form-control form-control-sm m-1 form-check-input'
         />
         </div>
         <input

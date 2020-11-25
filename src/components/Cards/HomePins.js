@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function PinsCard({ pin, updatePin }) {
+export default function PinsCard({ pin }) {
   return (
     <div className='card m-2'>
       <img className='card-img-top' src={pin.imageUrl} alt='Card cap' />

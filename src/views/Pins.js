@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getAllUserPins, deletePin } from '../helpers/data/pinData';
+import { getAllUserPins, deletePin, deleteJoinTable } from '../helpers/data/pinData';
 import { getAllUserBoards } from '../helpers/data/boardData';
 import PinsCard from '../components/Cards/PinsCard';
 import getUid from '../helpers/data/authData';
@@ -45,6 +45,9 @@ export default class Pins extends Component {
     deletePin(e.target.id)
       .then(() => {
         this.getPins();
+      })
+      .then(() => {
+        deleteJoinTable(e.target.id);
       });
   }
 
