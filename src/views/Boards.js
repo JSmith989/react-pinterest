@@ -1,6 +1,5 @@
 import React from 'react';
-import { getAllUserBoards, deleteBoard } from '../helpers/data/boardData';
-// import { getBoardPins, deletePin } from '../helpers/data/pinData';
+import { getAllUserBoards, deleteBoard, deleteJoinTable } from '../helpers/data/boardData';
 import BoardsCard from '../components/Cards/BoardsCard';
 import Loader from '../components/Loader';
 import getUid from '../helpers/data/authData';
@@ -15,6 +14,7 @@ export default class Boards extends React.Component {
 
   componentDidMount() {
     this.getBoards();
+    this.setLoading();
   }
 
   getBoards = () => {
@@ -36,6 +36,9 @@ export default class Boards extends React.Component {
     deleteBoard(e.target.id)
       .then(() => {
         this.getBoards();
+      })
+      .then(() => {
+        deleteJoinTable(e.target.id);
       });
   }
 
