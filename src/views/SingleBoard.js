@@ -4,6 +4,7 @@ import {
   getPin,
 } from '../helpers/data/pinData';
 import { getSingleBoard } from '../helpers/data/boardData';
+import Loader from '../components/Loader';
 import HomePins from '../components/Cards/HomePins';
 import BoardForm from '../components/Forms/BoardForm';
 import AppModal from '../components/AppModal';
@@ -12,6 +13,7 @@ export default class SingleBoard extends React.Component {
   state = {
     board: {},
     pins: [],
+    loading: true,
   };
 
   componentDidMount() {
@@ -25,6 +27,7 @@ export default class SingleBoard extends React.Component {
       .then((resp) => (
         this.setState({ pins: resp })
       ));
+    this.setLoading();
   }
 
   getBoardInfo = (boardId) => {
@@ -48,8 +51,18 @@ export default class SingleBoard extends React.Component {
     })
   )
 
+  setLoading = () => {
+    this.timer = setInterval(() => {
+      this.setState({ loading: false });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   render() {
-    const { pins, board } = this.state;
+    const { pins, board, loading } = this.state;
     const renderPins = () => (
       pins.map((pin) => (
          <HomePins key={pin.firebaseKey} pin={pin} />
@@ -58,6 +71,10 @@ export default class SingleBoard extends React.Component {
 
     // 3. Render the pins on the DOM
     return (
+      <>
+      { loading ? (
+        <Loader />
+      ) : (
       <div>
         <h1>{board.name}</h1>
         <AppModal title={'Update Board'} buttonLabel={'Update Board'}>
@@ -67,6 +84,8 @@ export default class SingleBoard extends React.Component {
           {renderPins()}
         </div>
       </div>
+      )}
+      </>
     );
   }
 }
