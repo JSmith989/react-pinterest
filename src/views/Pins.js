@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { getAllUserPins, deletePin, deleteJoinTable } from '../helpers/data/pinData';
 import { getAllUserBoards } from '../helpers/data/boardData';
 import PinsCard from '../components/Cards/PinsCard';
+import Loader from '../components/Loader';
 import getUid from '../helpers/data/authData';
 import PinForm from '../components/Forms/PinForm';
 import AppModal from '../components/AppModal';
@@ -10,11 +11,13 @@ export default class Pins extends Component {
   state = {
     pins: [],
     boards: [],
+    loading: true,
   }
 
   componentDidMount() {
     this.getPins();
     this.getBoards();
+    this.setLoading();
   }
 
   getPins = () => {
@@ -51,17 +54,29 @@ export default class Pins extends Component {
       });
   }
 
+  setLoading = () => {
+    this.timer = setInterval(() => {
+      this.setState({ loading: false });
+    }, 1000);
+  }
+
   render() {
     // console.warn(this.state.boards);
-    const { pins, boards } = this.state;
+    const { pins, boards, loading } = this.state;
     return (
-        <>
+      <>
+        { loading ? (
+          <Loader />
+        ) : (
+          <>
         <AppModal title={'Create Pin'} buttonLabel={'Create Pin'}>
           <PinForm pin={pins} boards={boards} onUpdate={this.getPins}/>
             </AppModal>
           <h2>Here are all of your pins</h2>
           <div className='d-flex flex-wrap container'>{pins.map((pin) => <PinsCard key={pin.firebaseKey} pin={pin} updatePin={this.getPins} removePin={this.removePin}/>)}</div>
         </>
+        )}
+      </>
     );
   }
 }

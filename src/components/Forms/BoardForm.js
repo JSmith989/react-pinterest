@@ -11,6 +11,7 @@ export default class BoardForm extends Component {
     imageUrl: this.props.board?.imageUrl || '',
     userId: this.props.board?.userId || '',
     description: this.props.board?.description || '',
+    successAlert: false,
   };
 
   componentDidMount() {
@@ -46,11 +47,13 @@ export default class BoardForm extends Component {
       createBoard(this.state)
         .then(() => {
           this.props.onUpdate();
+          this.setState({ successAlert: true });
         });
     } else {
       updateBoard(this.state)
         .then(() => {
           this.props.onUpdate(this.state.firebaseKey);
+          this.setState({ successAlert: true });
         });
     }
   }
@@ -58,6 +61,7 @@ export default class BoardForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
+        { this.state.successAlert && (<div className="alert alert-success m-2" role="alert">Success! You did it! <i class="far fa-smile fa-sm"></i></div>)}
         <h1>boards form</h1>
         <input
           type='text'
