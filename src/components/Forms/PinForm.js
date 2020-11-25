@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/storage';
-import { createPin, updatePin, createBoardPin } from '../../helpers/data/pinData';
+import {
+  createPin,
+  updatePin,
+  createBoardPin,
+  deleteKeyValue,
+} from '../../helpers/data/pinData';
 import { getAllUserBoards } from '../../helpers/data/boardData';
 import getUser from '../../helpers/data/authData';
 import BoardDropdown from '../BoardDropdown';
@@ -57,12 +62,11 @@ export default class PinForm extends Component {
 
     if (this.state.firebaseKey === '') {
       const newPin = {
-        name: this.state.name,
-        description: this.state.description,
-        imageUrl: this.state.imageUrl,
-        url: this.state.url,
         firebaseKey: this.state.firebaseKey,
+        name: this.state.name,
+        imageUrl: this.state.imageUrl,
         userId: this.state.userId,
+        description: this.state.description,
         private: this.state.private,
       };
       createPin(newPin)
@@ -78,19 +82,19 @@ export default class PinForm extends Component {
         });
     } else {
       const pinUpdate = {
-        name: this.state.name,
-        description: this.state.description,
-        imageUrl: this.state.imageUrl,
-        url: this.state.url,
         firebaseKey: this.state.firebaseKey,
+        imageUrl: this.state.imageUrl,
+        name: this.state.name,
         userId: this.state.userId,
+        description: this.state.description,
         private: this.state.private,
       };
+      deleteKeyValue(this.state.firebaseKey);
       updatePin(pinUpdate)
-        .then((response) => {
+        .then(() => {
           const updatedTable = {
             boardId: this.state.boardId,
-            pinId: response.data.firebaseKey,
+            pinId: this.state.firebaseKey,
             userId: this.state.userId,
           };
           createBoardPin(updatedTable);
@@ -109,15 +113,14 @@ export default class PinForm extends Component {
     return (
         <form onSubmit={this.handleSubmit}>
         <h1>Pins form</h1>
-        <div class="form-check form-check-inline">
-          <label class="form-check-label" for="inlineCheckbox1">Make Pin Private</label>
+        <div className="form-check form-check-inline">
+          <label className="form-check-label" htmlFor="inlineCheckbox1">Make Pin Private</label>
         <input
-          class="form-check-input"
           id="inlineCheckbox1"
           type='checkbox'
           name='status'
           onChange={this.changeStatus}
-          className='form-control form-control-sm m-1'
+          className='form-control form-control-sm m-1 form-check-input'
         />
         </div>
         <input

@@ -4,10 +4,9 @@ import {
   getPin,
 } from '../helpers/data/pinData';
 import { getSingleBoard } from '../helpers/data/boardData';
-import PinsCard from '../components/Cards/PinsCard';
+import HomePins from '../components/Cards/HomePins';
 import BoardForm from '../components/Forms/BoardForm';
 import AppModal from '../components/AppModal';
-import PinForm from '../components/Forms/PinForm';
 
 export default class SingleBoard extends React.Component {
   state = {
@@ -53,7 +52,7 @@ export default class SingleBoard extends React.Component {
     const { pins, board } = this.state;
     const renderPins = () => (
       pins.map((pin) => (
-         <PinsCard key={pin.firebaseKey} pin={pin} />
+         <HomePins key={pin.firebaseKey} pin={pin} />
       ))
     );
 
@@ -63,9 +62,6 @@ export default class SingleBoard extends React.Component {
         <h1>{board.name}</h1>
         <AppModal title={'Update Board'} buttonLabel={'Update Board'}>
         { Object.keys(board).length && <BoardForm board={board} onUpdate={this.getBoardInfo} />}
-        </AppModal>
-        <AppModal title={'Pin a Pin'} buttonLabel={'Pin a Pin'}>
-          <PinForm board={board} onUpdate={this.getBoardInfo}/>
         </AppModal>
         <div className='d-flex flex-wrap container'>
           {renderPins()}

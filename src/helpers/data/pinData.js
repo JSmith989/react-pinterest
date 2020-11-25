@@ -55,12 +55,27 @@ const getPin = (pinId) => new Promise((resolve, reject) => {
 
 const deletePin = (firebaseKey) => axios.delete(`${baseUrl}/pins/${firebaseKey}.json`);
 
-const deletePinOffBoard = (firebaseKey) => {
-  axios.get(`${baseUrl}/pins-boards.json?orderBy="pinId"&equalTo="${firebaseKey}"`).then((response) => {
-    axios.delete(`${baseUrl}/pins-boards/${Object.keys(response.data)[0]}.json`);
+const deletePinsBoards = (firebaseKey) => axios.delete(`${baseUrl}/pins-boards/${firebaseKey}.json`);
+
+const deleteKeyValue = (pinId) => axios.get(`${baseUrl}/pins-boards.json?orderBy="pinId"&equalTo="${pinId}"`)
+  .then((response) => {
+    const arrayValue = Object.values(response);
+    arrayValue.forEach((array) => {
+      const keyArray = Object.keys(array);
+      keyArray.forEach((id) => {
+        deletePinsBoards(id);
+      });
+    });
   });
-};
+
+const deleteJoinTable = (pinId) => new Promise((resolve, reject) => {
+  axios.get(`${baseUrl}/pins-boards.json?orderBy="pinId"&equalTo="${pinId}"`).then((response) => {
+    Object.keys(response.data).forEach((firebaseKey) => {
+      axios.delete(`${baseUrl}/pins-boards/${firebaseKey}.json`);
+    });
+  }).then(resolve).catch((error) => reject(error));
+});
 
 export {
-  getBoardPins, getPin, getAllPins, getAllUserPins, createPin, updatePin, deletePin, createBoardPin, joinPinToBoard, deletePinOffBoard,
+  getBoardPins, getPin, getAllPins, getAllUserPins, createPin, updatePin, deletePin, createBoardPin, joinPinToBoard, deleteJoinTable, deleteKeyValue,
 };

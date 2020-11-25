@@ -32,7 +32,7 @@ const updateBoard = (dataObject) => axios.patch(`${baseUrl}/boards/${dataObject.
 
 const deleteBoard = (boardId) => axios.delete(`${baseUrl}/boards/${boardId}.json`);
 
-const deleteJoinTable = (boardId) => new Promise((resolve, reject) => {
+const deleteJoinTableBoard = (boardId) => new Promise((resolve, reject) => {
   axios.get(`${baseUrl}/pins-boards.json?orderBy="boardId"&equalTo="${boardId}"`).then((response) => {
     Object.keys(response.data).forEach((firebaseKey) => {
       axios.delete(`${baseUrl}/pins-boards/${firebaseKey}.json`);
@@ -41,5 +41,5 @@ const deleteJoinTable = (boardId) => new Promise((resolve, reject) => {
 });
 
 export {
-  getAllUserBoards, getSingleBoard, createBoard, updateBoard, getAllBoards, deleteBoard, deleteJoinTable,
+  getAllUserBoards, getSingleBoard, createBoard, updateBoard, getAllBoards, deleteBoard, deleteJoinTableBoard,
 };
