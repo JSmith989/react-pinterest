@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/storage';
-import { createPin, updatePin, joinPinToBoard } from '../../helpers/data/pinData';
+import { createPin, updatePin, createBoardPin } from '../../helpers/data/pinData';
 import getUser from '../../helpers/data/authData';
+import BoardDropdown from '../BoardDropdown';
 
 export default class PinForm extends Component {
   state = {
@@ -11,8 +12,12 @@ export default class PinForm extends Component {
     imageUrl: this.props.pin?.imageUrl || '',
     userId: this.props.pin?.userId || '',
     description: this.props.pin?.description || '',
+    boardId: this.props.board?.firebaseKey || '',
     private: false,
+    board: [],
   };
+
+  boardRef = React.createRef();
 
   componentDidMount() {
     const userId = getUser();
@@ -43,19 +48,45 @@ export default class PinForm extends Component {
     e.preventDefault();
 
     if (this.state.firebaseKey === '') {
-      createPin(this.state)
+      const newPin = {
+        name: this.state.name,
+        description: this.state.description,
+        imageUrl: this.state.imageUrl,
+        url: this.state.url,
+        firebaseKey: this.state.firebaseKey,
+        userId: this.state.userId,
+        private: this.state.private,
+      };
+      createPin(newPin)
         .then((response) => {
           const joinTableObject = {
-            boardId: this.props.board.firebaseKey,
+            boardId: this.boardRef.current.value,
             pinId: response.data.firebaseKey,
             userId: this.state.userId,
           };
-          joinPinToBoard(joinTableObject).then(() => this.props.onUpdate(this.props.board.firebaseKey));
+          createBoardPin(joinTableObject);
+        }).then(() => {
+          this.props.onUpdate?.(this.props.boardId);
         });
     } else {
-      updatePin(this.state)
-        .then(() => {
-          this.props.onUpdate(this.props.pin.firebaseKey);
+      const pinUpdate = {
+        name: this.state.name,
+        description: this.state.description,
+        imageUrl: this.state.imageUrl,
+        url: this.state.url,
+        firebaseKey: this.state.firebaseKey,
+        userId: this.state.userId,
+        private: this.state.private,
+      };
+      updatePin(pinUpdate)
+        .then((response) => {
+          const updatedTable = {
+            boardId: this.boardRef.current.value,
+            pinId: response.data.firebaseKey,
+            userId: this.state.userId,
+          };
+          createBoardPin(updatedTable);
+          this.props.onUpdate?.(this.props.pin.firebaseKey);
         });
     }
   }
@@ -99,6 +130,7 @@ export default class PinForm extends Component {
           className='form-control form-control-lg m-1'
           required
         />
+        <BoardDropdown onChange={this.handleChange} ref={this.boardRef}/>
         <input
           type='url'
           name='imageUrl'
