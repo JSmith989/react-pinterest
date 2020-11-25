@@ -20,6 +20,7 @@ export default class PinForm extends Component {
     description: this.props.pin?.description || '',
     boardId: this.props.pin?.boardId || '',
     private: false,
+    successAlert: false,
   };
 
   componentDidMount() {
@@ -79,6 +80,7 @@ export default class PinForm extends Component {
           createBoardPin(joinTableObject);
         }).then(() => {
           this.props.onUpdate(this.props.boardId);
+          this.setState({ successAlert: true });
         });
     } else {
       const pinUpdate = {
@@ -99,6 +101,7 @@ export default class PinForm extends Component {
           };
           createBoardPin(updatedTable);
           this.props.onUpdate(this.props.pin.firebaseKey);
+          this.setState({ successAlert: true });
         });
     }
   }
@@ -112,6 +115,7 @@ export default class PinForm extends Component {
   render() {
     return (
         <form onSubmit={this.handleSubmit}>
+          { this.state.successAlert && (<div className="alert alert-success m-2" role="alert">Success! You did it! <i class="far fa-smile fa-sm"></i></div>)}
         <h1>Pins form</h1>
         <div className="form-check form-check-inline">
           <label className="form-check-label" htmlFor="inlineCheckbox1">Make Pin Private</label>
