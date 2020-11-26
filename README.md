@@ -2,9 +2,9 @@
 
 Earlier in the school year I had created a pinterest app using firebase. This assignment was to use the same firebase data that I created but instead use react to create the project. 
 
-## Deployed via Netlify
+## Deployed via Netlify [![Netlify Status](https://api.netlify.com/api/v1/badges/04e4c6a2-78d6-476e-8627-8a0def87d07e/deploy-status)](https://app.netlify.com/sites/notpinterest/deploys)
 https://notpinterest.netlify.app/
-[![Netlify Status](https://api.netlify.com/api/v1/badges/04e4c6a2-78d6-476e-8627-8a0def87d07e/deploy-status)](https://app.netlify.com/sites/notpinterest/deploys)
+
 
 ## Features
 CRUD on Pins
