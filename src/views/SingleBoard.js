@@ -80,7 +80,7 @@ export default class SingleBoard extends React.Component {
         <AppModal title={'Update Board'} buttonLabel={'Update Board'}>
         { Object.keys(board).length && <BoardForm board={board} onUpdate={this.getBoardInfo} />}
         </AppModal>
-        <div className='d-flex flex-wrap container'>
+        <div className='d-flex flex-wrap container justify-content-center'>
           {renderPins()}
         </div>
       </div>

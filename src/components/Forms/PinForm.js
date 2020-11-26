@@ -115,7 +115,7 @@ export default class PinForm extends Component {
   render() {
     return (
         <form onSubmit={this.handleSubmit}>
-          { this.state.successAlert && (<div className="alert alert-success m-2" role="alert">Success! You did it! <i class="far fa-smile fa-sm"></i></div>)}
+          { this.state.successAlert && (<div className="alert alert-success m-2" role="alert">Success! You did it! <i className="far fa-smile fa-sm"></i></div>)}
         <h1>Pins form</h1>
         <div className="form-check form-check-inline">
           <label className="form-check-label" htmlFor="inlineCheckbox1">Make Pin Private</label>
