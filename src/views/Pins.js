@@ -72,8 +72,8 @@ export default class Pins extends Component {
         <AppModal title={'Create Pin'} buttonLabel={'Create Pin'}>
           <PinForm pin={pins} boards={boards} onUpdate={this.getPins}/>
             </AppModal>
-          <h2>Here are all of your pins</h2>
-          <div className='d-flex flex-wrap container'>{pins.map((pin) => <PinsCard key={pin.firebaseKey} pin={pin} updatePin={this.getPins} removePin={this.removePin}/>)}</div>
+          <h2>Your Pins</h2>
+          <div className='d-flex flex-wrap container justify-content-center'>{pins.map((pin) => <PinsCard key={pin.firebaseKey} pin={pin} updatePin={this.getPins} removePin={this.removePin}/>)}</div>
         </>
         )}
       </>

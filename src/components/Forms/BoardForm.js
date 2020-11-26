@@ -61,7 +61,7 @@ export default class BoardForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        { this.state.successAlert && (<div className="alert alert-success m-2" role="alert">Success! You did it! <i class="far fa-smile fa-sm"></i></div>)}
+        { this.state.successAlert && (<div className="alert alert-success m-2" role="alert">Success! You did it! <i className="far fa-smile fa-sm"></i></div>)}
         <h1>boards form</h1>
         <input
           type='text'
