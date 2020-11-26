@@ -32,7 +32,7 @@ Bootstrap
 
 ## Code Snippet
 ```
-<>
+      <>
         { loading ? (
           <Loader />
         ) : (
